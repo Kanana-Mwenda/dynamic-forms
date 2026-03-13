@@ -1,25 +1,28 @@
-import { Link } from '@tanstack/react-router'
 import {Container,Group, Title, Select} from '@mantine/core'
 import {useNavigate} from '@tanstack/react-router'
 
 export default function Header() {
+
   const navigate = useNavigate()
 
+
   return (
-    <Container size="xl" py="md">
-       <Group justify="space-between">
-          <Title order={1} ta="right">Dynamic Forms</Title>
+    <Container h="48px" w="61%" size="md" py="xs" bg="blue" c="white">
+       <Group justify="space-between" gap="md" wrap="nowrap">
 
           <Select
-            placeholder="Select an option"
-            data={[
-              {value: '/', label: 'Home'},
-              {value: '/contactForm', label: 'Contact Form'},
-              {value: '/insuranceForm', label: 'Insurance Form'},
-            ]}
-            onChange= {(value) => value && navigate({to: value})}
-            />
-                    
+              placeholder='Choose schema'
+              data = {[
+                { value: '/', label: 'Home' },
+                { value: '/contacts', label: 'Contacts' },
+                { value: '/insurance', label: 'Insurance' }
+              ]}
+              onChange={(value) => {
+                if (value) navigate({to: value})
+              }}
+          />
+
+          <Title order={3}>Dynamic Forms</Title>       
           
        </Group>
     </Container>

@@ -1,19 +1,27 @@
-import { Outlet, createRootRoute } from '@tanstack/react-router'
+import { Outlet, createRootRoute, redirect } from '@tanstack/react-router'
 import { TanStackRouterDevtoolsPanel } from '@tanstack/react-router-devtools'
 import { TanStackDevtools } from '@tanstack/react-devtools'
 import  Header from '#/components/Header'
+import { Container } from '@mantine/core'
 
 import '../styles.css'
 
 export const Route = createRootRoute({
   component: RootComponent,
+  beforeLoad: () => {
+    if (window.location.pathname !== '/') {
+      throw redirect({ to: '/' })
+    }
+  }
 })
 
 function RootComponent() {
   return (
     <>
     <Header/>
+    <Container size="xl" py="md">
       <Outlet />
+      </Container>
       <TanStackDevtools
         config={{
           position: 'bottom-right',

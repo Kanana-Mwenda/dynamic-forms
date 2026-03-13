@@ -1,11 +1,18 @@
-import { createFileRoute , useNavigate } from '@tanstack/react-router'
-import { Stack, Button, Container, Title,Text, Select} from '@mantine/core'
-
+import { createFileRoute } from '@tanstack/react-router'
+import { Container, Title, Text, Flex } from '@mantine/core'
 
 export const Route = createFileRoute('/')({ component: App })
 
 function App() {
-  return
-   
-  
+  return(
+    <Flex align="center" justify="center">
+    <Container size="md" py="xl">
+      <Title order={2} ta="center" mb="md">Welcome to Dynamic Forms</Title>
+
+      <Text ta="center">
+        Use the dropdown in the header to choose a schema and fill out the form.
+      </Text>
+    </Container>
+    </Flex>
+  )
 }
