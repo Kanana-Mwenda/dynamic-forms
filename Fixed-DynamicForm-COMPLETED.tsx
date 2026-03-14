@@ -15,7 +15,7 @@ const spacingMap: Record<string, string> = {
 };
 
 const DynamicForm = ({ schema }: DynamicFormProps) => {
-  const [formKey, setFormKey] = useState(0); // for resetting the form
+  const [formKey, setFormKey] = useState(0); 
   const { register, handleSubmit, watch, control, formState: { errors }, reset } = useForm();
 
   const values = watch();
@@ -24,11 +24,9 @@ const DynamicForm = ({ schema }: DynamicFormProps) => {
   const isFieldVisible = (field: FieldDefinition) => {
     if (!field.visibleWhen) return true;
 
-    // Array of visibility conditions
     if (Array.isArray(field.visibleWhen)) {
       return field.visibleWhen.every((condition) => {
         const currentValue = values[condition.field];
-        
         if (condition.op === "in") {
           return condition.value.includes(currentValue);
         }
@@ -36,7 +34,6 @@ const DynamicForm = ({ schema }: DynamicFormProps) => {
       });
     }
 
-    // Single visibility condition
     const { field: watchedField, op, value } = field.visibleWhen;
     const currentValue = values[watchedField];
 
@@ -236,23 +233,19 @@ const DynamicForm = ({ schema }: DynamicFormProps) => {
       }
     });
   };
- 
 
-  // Submit Handler
+  // FIXED Submit Handler
   const onSubmit = (data: any) => {
     console.log("Form submitted:", data);
     notifications.show({
       title: 'Success',
       message: 'Form submitted successfully!',
       color: 'green',
-      position: 'bottom-right',
-      withCloseButton: true,
-      autoClose: 2000,
-
-
+      position: 'top-right',
+      top: 80,
+      autoClose: 4000,
     });
-    // Reset form 
-    reset();
+    reset();  // Clear ALL fields
     setFormKey(prev => prev + 1);
   };
 

@@ -1,20 +1,3 @@
-.nav-link {
-  color: white;
-  text-decoration: none;
-  padding: 0.25rem 0.5rem;
-  border-radius: 4px;
-  transition: all 0.2s ease;
-}
-
-.nav-link:hover {
-  background-color: rgba(255, 255, 255, 0.1);
-}
-
-.nav-link-active {
-  background-color: #1e40af;
-  font-weight: bold;
-}
-
 /* Form */
 form {
   width: 100%;
@@ -66,3 +49,13 @@ hr {
   margin-top: 0;
   margin-bottom: 10px;
 }
+
+.mantine-Notification-root {
+  max-width: 350px ;
+  margin-right: 5px;
+  padding: 10px ;
+}
+.mantine-Notification-body {
+  padding: 5px ;
+}
+
