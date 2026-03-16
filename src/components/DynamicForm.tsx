@@ -158,6 +158,22 @@ const DynamicForm = ({ schema }: DynamicFormProps) => {
           />
         );
 
+        case "checkbox":
+        return (
+          <Controller
+            name={field.id}
+            control={control}
+            rules={field.rules}
+            render={({ field: controllerField }) => (
+              <Switch
+                label={field.label}
+                {...controllerField}
+                error={errorMessage}
+              />
+            )}
+          />
+        );
+
       default:
         return (
           <TextInput

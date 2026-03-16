@@ -8,7 +8,7 @@ export default function Header() {
 
 
   return (
-    <Container h="48px" w="61%" size="md" py="xs" bg="blue" c="white">
+    <Container h="48px" fluid={true} py="xs" size="md" bg="blue" c="white">
        <Group justify="space-between" gap="md" wrap="nowrap">
 
           <Select
