@@ -52,11 +52,7 @@ hr {
 
 /* Notification*/
 .mantine-Notification-root {
-  max-width: 350px ;
-  margin-right: 5px;
-  padding: 10px ;
-}
-.mantine-Notification-body {
+  max-width: 350px;
   padding: 5px ;
 }
 

@@ -5,7 +5,7 @@ export const Route = createFileRoute('/')({ component: App })
 
 function App() {
   return(
-    <Flex align="center" justify="center">
+    <Flex align="center" justify="center" h="70vh">
     <Container size="md" py="xl">
       <Title order={2} ta="center" mb="md">Welcome to Dynamic Forms</Title>
 
