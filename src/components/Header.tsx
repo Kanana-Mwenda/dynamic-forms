@@ -8,8 +8,8 @@ export default function Header() {
 
 
   return (
-    <Container h="48px" fluid={true} py="xs" size="md" bg="blue" c="white">
-       <Group justify="space-between" gap="md" wrap="nowrap">
+    <Container h="48px" fluid={true} pt="xs" pb="sm" size="md" bg="blue" c="white">
+       <Group h="100%" justify="space-between" align="center" wrap="nowrap">
 
           <Select
               value={location.pathname}
@@ -30,4 +30,3 @@ export default function Header() {
   )
   }
      
-

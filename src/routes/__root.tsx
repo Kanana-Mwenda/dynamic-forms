@@ -14,7 +14,7 @@ function RootComponent() {
   return (
     <>
     <Header/>
-    <Container size="xl" py="md">
+    <Container size="xl" pb="md">
       <Outlet />
       </Container>
       <TanStackDevtools
