@@ -249,7 +249,6 @@ const DynamicForm = ({ schema }: DynamicFormProps) => {
       withCloseButton: true,
       autoClose: 2000,
 
-
     });
     // Reset form 
     reset();

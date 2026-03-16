@@ -26,13 +26,7 @@ const rootElement = document.getElementById('app')!
 if (!rootElement.innerHTML) {
   const root = ReactDOM.createRoot(rootElement)
   root.render(
-  <MantineProvider
-      theme={{
-        // /** optional: customize your theme here */
-        // colorScheme: 'light',
-        // primaryColor: 'blue',
-      }}
-    >
+  <MantineProvider>
       <RouterProvider router={router} />
       <Notifications />
     </MantineProvider>
