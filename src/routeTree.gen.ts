@@ -9,10 +9,30 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as RegistrationRouteImport } from './routes/registration'
+import { Route as ProductRouteImport } from './routes/product'
+import { Route as JobApplicationRouteImport } from './routes/job-application'
 import { Route as InsuranceRouteImport } from './routes/insurance'
 import { Route as ContactsRouteImport } from './routes/contacts'
+import { Route as AgentRouteImport } from './routes/agent'
+import { Route as AddressRouteImport } from './routes/address'
 import { Route as IndexRouteImport } from './routes/index'
 
+const RegistrationRoute = RegistrationRouteImport.update({
+  id: '/registration',
+  path: '/registration',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ProductRoute = ProductRouteImport.update({
+  id: '/product',
+  path: '/product',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const JobApplicationRoute = JobApplicationRouteImport.update({
+  id: '/job-application',
+  path: '/job-application',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const InsuranceRoute = InsuranceRouteImport.update({
   id: '/insurance',
   path: '/insurance',
@@ -23,6 +43,16 @@ const ContactsRoute = ContactsRouteImport.update({
   path: '/contacts',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AgentRoute = AgentRouteImport.update({
+  id: '/agent',
+  path: '/agent',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AddressRoute = AddressRouteImport.update({
+  id: '/address',
+  path: '/address',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
@@ -31,36 +61,102 @@ const IndexRoute = IndexRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/address': typeof AddressRoute
+  '/agent': typeof AgentRoute
   '/contacts': typeof ContactsRoute
   '/insurance': typeof InsuranceRoute
+  '/job-application': typeof JobApplicationRoute
+  '/product': typeof ProductRoute
+  '/registration': typeof RegistrationRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/address': typeof AddressRoute
+  '/agent': typeof AgentRoute
   '/contacts': typeof ContactsRoute
   '/insurance': typeof InsuranceRoute
+  '/job-application': typeof JobApplicationRoute
+  '/product': typeof ProductRoute
+  '/registration': typeof RegistrationRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/address': typeof AddressRoute
+  '/agent': typeof AgentRoute
   '/contacts': typeof ContactsRoute
   '/insurance': typeof InsuranceRoute
+  '/job-application': typeof JobApplicationRoute
+  '/product': typeof ProductRoute
+  '/registration': typeof RegistrationRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/contacts' | '/insurance'
+  fullPaths:
+    | '/'
+    | '/address'
+    | '/agent'
+    | '/contacts'
+    | '/insurance'
+    | '/job-application'
+    | '/product'
+    | '/registration'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/contacts' | '/insurance'
-  id: '__root__' | '/' | '/contacts' | '/insurance'
+  to:
+    | '/'
+    | '/address'
+    | '/agent'
+    | '/contacts'
+    | '/insurance'
+    | '/job-application'
+    | '/product'
+    | '/registration'
+  id:
+    | '__root__'
+    | '/'
+    | '/address'
+    | '/agent'
+    | '/contacts'
+    | '/insurance'
+    | '/job-application'
+    | '/product'
+    | '/registration'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AddressRoute: typeof AddressRoute
+  AgentRoute: typeof AgentRoute
   ContactsRoute: typeof ContactsRoute
   InsuranceRoute: typeof InsuranceRoute
+  JobApplicationRoute: typeof JobApplicationRoute
+  ProductRoute: typeof ProductRoute
+  RegistrationRoute: typeof RegistrationRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/registration': {
+      id: '/registration'
+      path: '/registration'
+      fullPath: '/registration'
+      preLoaderRoute: typeof RegistrationRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/product': {
+      id: '/product'
+      path: '/product'
+      fullPath: '/product'
+      preLoaderRoute: typeof ProductRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/job-application': {
+      id: '/job-application'
+      path: '/job-application'
+      fullPath: '/job-application'
+      preLoaderRoute: typeof JobApplicationRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/insurance': {
       id: '/insurance'
       path: '/insurance'
@@ -75,6 +171,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ContactsRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/agent': {
+      id: '/agent'
+      path: '/agent'
+      fullPath: '/agent'
+      preLoaderRoute: typeof AgentRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/address': {
+      id: '/address'
+      path: '/address'
+      fullPath: '/address'
+      preLoaderRoute: typeof AddressRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -87,8 +197,13 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AddressRoute: AddressRoute,
+  AgentRoute: AgentRoute,
   ContactsRoute: ContactsRoute,
   InsuranceRoute: InsuranceRoute,
+  JobApplicationRoute: JobApplicationRoute,
+  ProductRoute: ProductRoute,
+  RegistrationRoute: RegistrationRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

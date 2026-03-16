@@ -3,6 +3,7 @@ import { Controller, useForm } from "react-hook-form";
 import { useState } from "react";
 import { Select, TextInput, Textarea, NumberInput, Radio, Switch, Button } from "@mantine/core";
 import { notifications } from '@mantine/notifications';
+import { DatePicker } from '@mantine/dates';
 
 interface DynamicFormProps {
   schema: FormSchema;
@@ -173,6 +174,22 @@ const DynamicForm = ({ schema }: DynamicFormProps) => {
             )}
           />
         );
+
+        case "date":
+        return (
+          <Controller
+            name={field.id}
+            control={control}
+            rules={field.rules}
+            render={({ field: controllerField }) => (
+              <DatePicker
+                label={field.label}
+                placeholder={field.placeholder}
+                {...controllerField}
+                error={errorMessage}
+              />  
+            )}
+        )
 
       default:
         return (

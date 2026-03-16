@@ -16,7 +16,12 @@ export default function Header() {
               data = {[
                 { value: '/', label: 'Home' },
                 { value: '/contacts', label: 'Contacts' },
-                { value: '/insurance', label: 'Insurance'}
+                { value: '/insurance', label: 'Insurance'},
+                { value: '/job-application', label: 'Job Application'},
+                { value: '/registration', label: 'Registration'},
+                { value: '/product', label: 'Product'},
+                { value: '/address', label: 'Address'},
+                { value: '/agent', label: 'Agent'},
               ]}
               onChange={(value) => {
                 if (value) navigate({to: value})
