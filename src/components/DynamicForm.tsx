@@ -61,7 +61,7 @@ const { register, handleSubmit, watch, control, formState: { errors }, reset } =
         return (
           <TextInput
             label={field.label}
-            type={field.inputType || "text"}
+            type= "text"
             placeholder={field.placeholder}
             {...register(field.id, field.rules)}
             error={errorMessage}
