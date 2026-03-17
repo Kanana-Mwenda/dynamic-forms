@@ -198,7 +198,6 @@ const { register, handleSubmit, watch, control, formState: { errors }, reset } =
             render={({ field: controllerField }) => (
               <MultiSelect
                 label={field.label}
-                placeholder={field.placeholder}
                 {...field.props}
                 {...controllerField}
                 error={errorMessage}
@@ -216,7 +215,6 @@ const { register, handleSubmit, watch, control, formState: { errors }, reset } =
             render={({ field: controllerField }) => (
               <FileInput
                 label={field.label}
-                placeholder={field.placeholder}
                 accept=".pdf,.doc,.docx"
                 {...field.props}
                 {...controllerField}
