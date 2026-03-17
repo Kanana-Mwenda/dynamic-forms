@@ -3,7 +3,7 @@ import { TanStackRouterDevtoolsPanel } from '@tanstack/react-router-devtools'
 import { TanStackDevtools } from '@tanstack/react-devtools'
 import  Header from '#/components/Header'
 import { Container } from '@mantine/core'
-import '../styles.css',
+import '../styles.css'
 
 export const Route = createRootRoute({
   component: RootComponent,

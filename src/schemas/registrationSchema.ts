@@ -26,7 +26,7 @@ export const registrationFormSchema: any = {
             renderer: "date",
             props: {
                 maxDate: new Date(),
-                placeholder: "Pick a date"
+                placeholder: "Pick a date",
             },
             rules: { required: "Date of birth is required" }
         },

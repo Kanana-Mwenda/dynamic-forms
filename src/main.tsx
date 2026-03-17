@@ -4,8 +4,10 @@ import { routeTree } from './routeTree.gen'
 
 import {MantineProvider} from '@mantine/core'
 import {Notifications} from '@mantine/notifications'
+import { DatesProvider }  from '@mantine/dates';
 
 import '@mantine/core/styles.css';
+import '@mantine/dates/styles.css';
 import '@mantine/notifications/styles.css';
 
 
@@ -26,9 +28,17 @@ const rootElement = document.getElementById('app')!
 if (!rootElement.innerHTML) {
   const root = ReactDOM.createRoot(rootElement)
   root.render(
-  <MantineProvider>
-      <RouterProvider router={router} />
-      <Notifications />
+  <MantineProvider
+      >
+      <DatesProvider
+      settings={{
+        locale: 'en-GB',
+        firstDayOfWeek: 0,
+        weekendDays: [0, 6]
+      }}>
+       <RouterProvider router={router} />
+       <Notifications />
+      </DatesProvider>
     </MantineProvider>
 )
 }

@@ -1,9 +1,9 @@
 import type { FormSchema, LayoutNode, FieldDefinition } from "../types";
 import { Controller, useForm } from "react-hook-form";
 import { useState } from "react";
-import { Select, TextInput, Textarea, NumberInput, Radio, Switch, Button } from "@mantine/core";
+import { Select, TextInput, Textarea, NumberInput, Radio, Switch, Button, MultiSelect, FileInput } from "@mantine/core";
 import { notifications } from '@mantine/notifications';
-import { DatePicker } from '@mantine/dates';
+import { DatePickerInput } from '@mantine/dates';
 
 interface DynamicFormProps {
   schema: FormSchema;
@@ -149,9 +149,7 @@ const DynamicForm = ({ schema }: DynamicFormProps) => {
               <NumberInput
                 label={field.label}
                 placeholder={field.placeholder}
-                min={field.props?.min}
-                max={field.props?.max}
-                step={field.props?.step}
+                {...field.props}
                 {...controllerField}
                 error={errorMessage}
               />
@@ -182,14 +180,54 @@ const DynamicForm = ({ schema }: DynamicFormProps) => {
             control={control}
             rules={field.rules}
             render={({ field: controllerField }) => (
-              <DatePicker
+              <DatePickerInput
                 label={field.label}
                 placeholder={field.placeholder}
+                {...field.props}
+                value={controllerField.value}
+                onChange={controllerField.onChange}
+                error={errorMessage}
+              />
+            )}
+          />
+        );
+
+        case "multiselect":
+        return (
+          <Controller
+            name={field.id}
+            control={control}
+            rules={field.rules}
+            render={({ field: controllerField }) => (
+              <MultiSelect
+                label={field.label}
+                placeholder={field.placeholder}
+                {...field.props}
                 {...controllerField}
                 error={errorMessage}
-              />  
+              />
             )}
-        )
+          />
+        );
+
+        case "file":
+        return (
+          <Controller
+            name={field.id}
+            control={control}
+            rules={field.rules}
+            render={({ field: controllerField }) => (
+              <FileInput
+                label={field.label}
+                placeholder={field.placeholder}
+                accept=".pdf,.doc,.docx"
+                {...field.props}
+                {...controllerField}
+                error={errorMessage}
+              />
+            )}
+          />
+        );
 
       default:
         return (

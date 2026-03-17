@@ -148,7 +148,11 @@ export const jobApplicationSchema: any = {
                 accept: ".pdf,.doc,.docx",
                 maxSize: 5 * 1024 * 1024 // 5MB
             },
-            rules: { required: "Resume is required" }
+            rules: { 
+                required: "Resume is required" ,
+                validate: (value: any) =>
+                    value && value.size <= 5 * 1024 * 1024 || "Resume must be less than 5MB"
+            }
         },
         coverLetter: {
             id: "coverLetter",
@@ -199,7 +203,7 @@ export const jobApplicationSchema: any = {
             props: {
                 min: 0,
                 step: 100000,
-                thousandsSeparator: ","
+                thousandSeparator: ","
             }
         },
         willingToRelocate: {
