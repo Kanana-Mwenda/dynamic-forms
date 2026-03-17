@@ -17,7 +17,7 @@ const spacingMap: Record<string, string> = {
 
 const DynamicForm = ({ schema }: DynamicFormProps) => {
   const [formKey, setFormKey] = useState(0); // for resetting the form
-  const { register, handleSubmit, watch, control, formState: { errors }, reset } = useForm();
+const { register, handleSubmit, watch, control, formState: { errors }, reset } = useForm();
 
   const values = watch();
 
@@ -54,9 +54,7 @@ const DynamicForm = ({ schema }: DynamicFormProps) => {
 
   // Field Renderer
   const renderField = (field: FieldDefinition) => {
-    const errorMessage = errors[field.id]?.message
-      ? String(errors[field.id]?.message)
-      : undefined;
+    const errorMessage = errors[field.id]?.message as string | undefined;
 
     switch (field.renderer) {
       case "text":
@@ -182,7 +180,6 @@ const DynamicForm = ({ schema }: DynamicFormProps) => {
             render={({ field: controllerField }) => (
               <DatePickerInput
                 label={field.label}
-                placeholder={field.placeholder}
                 {...field.props}
                 value={controllerField.value}
                 onChange={controllerField.onChange}
