@@ -10,7 +10,7 @@ export const Route = createFileRoute('/product')({
 function ProductFormPage() {
   return (
   <Container size="md" py="xs">
-    <Title order={3} ta="center"> Product Form</Title>
+    <Title order={3} ta="center" c="#694a7b"> Product Form</Title>
     <DynamicForm schema={productFormSchema} />
   </Container>
   )

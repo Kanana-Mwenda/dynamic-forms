@@ -10,7 +10,7 @@ export const Route = createFileRoute('/registration')({
 function RegistrationPage() {
   return (
   <Container size="md" py="xs">
-    <Title order={3} ta="center"> Registration Form</Title>
+    <Title order={3} ta="center" c="#694a7b"> Registration Form</Title>
     <DynamicForm schema={registrationFormSchema} />
   </Container>
   )

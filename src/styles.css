@@ -37,7 +37,7 @@ input, select, textarea {
 
 input:focus, select:focus, textarea:focus {
   outline: none;
-  border-color: #694a7b;
+  border: 2px solid #694a7b;
 }
 
 /* Submit Button */ 
@@ -69,7 +69,6 @@ hr {
   padding: 5px ;
 }
 
-
 input[type="text"],
 input[type="password"],
 input[type="email"],
@@ -84,8 +83,30 @@ textarea {
   background-color: #efefef !important;
 }
 
-.mantine-MultiSelect-input {
+/* .mantine-MultiSelect-input {
   background-color: #efefef !important;
+  outline: none !important;
+}
+
+.mantine-Multiselect-input:focus{
+  border: 2px solid #694a7b !important;
+  outline: none !important;
+} */
+
+/* Kill inner input outline in MultiSelect only */
+.mantine-MultiSelect-input input:focus,
+.mantine-MultiSelect-input:focus-within input {
+  outline: none !important;
+  box-shadow: none !important;
+  border: 2px solid #694a7b !important;
+}
+
+/* Ensure outer container clean focus */
+.mantine-MultiSelect-input:focus-within,
+.mantine-MultiSelect-input:focus {
+  outline: none !important;
+  box-shadow: none !important;
+  border: 2px solid #694a7b !important;
 }
 
 .mantine-FileInput-input{
@@ -100,11 +121,14 @@ textarea {
   font-family: 'Lexend Deca', sans-serif !important;
 }
 
-.mantine-Select-input,
-.mantine-Select-item,
-.mantine-Select-dropdown * {
+/* Select */
+.mantine-Select-input {
   font-family: 'Lexend Deca', sans-serif !important;
   background-color: #efefef !important;
+}
+
+.mantine-Select-item {
+  background-color: #efefef !important;;
 }
 
 input::placeholder,

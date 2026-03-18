@@ -120,10 +120,11 @@ const { register, handleSubmit, watch, control, formState: { errors }, reset } =
                 error={errorMessage}
               >
                 {field.props?.options?.map((option: any) => (
-                  <Radio
+                  <Radio color="#694a7b"
                     key={option.value}
                     label={option.label}
                     value={option.value}
+
                   />
                 ))}
               </Radio.Group>
@@ -138,7 +139,7 @@ const { register, handleSubmit, watch, control, formState: { errors }, reset } =
             control={control}
             rules={field.rules}
             render={({ field: controllerField }) => (
-              <Switch
+              <Switch color="694a7b"
                 label={field.label}
                 {...controllerField}
                 error={errorMessage}
@@ -172,7 +173,7 @@ const { register, handleSubmit, watch, control, formState: { errors }, reset } =
             control={control}
             rules={field.rules}
             render={({ field: controllerField }) => (
-              <Switch
+              <Switch color="694a7b"
                 label={field.label}
                 {...controllerField}
                 error={errorMessage}

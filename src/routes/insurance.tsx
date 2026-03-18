@@ -10,7 +10,7 @@ export const Route = createFileRoute('/insurance')({
 function InsurancePage() {
   return ( 
     <Container size="md" py="xs">
-      <Title order={3} ta="center" mb="sm">Insurance Form</Title>
+      <Title order={3} ta="center" mb="sm" c="#694a7b">Insurance Form</Title>
       <DynamicForm schema={insuranceQuoteSchema} />
     </Container>
   )

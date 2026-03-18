@@ -10,7 +10,7 @@ export const Route = createFileRoute('/job-application')({
 function JobApplicationPage() {
   return (
   <Container size="md" py="xs">
-    <Title order={3} ta="center"> Job Application Form</Title>
+    <Title order={3} ta="center" c="#694a7b"> Job Application Form</Title>
     <DynamicForm schema={jobApplicationSchema} />
   </Container>
   )

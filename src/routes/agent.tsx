@@ -10,7 +10,7 @@ export const Route = createFileRoute('/agent')({
 function AgentFormPage() {
   return (
   <Container size="md" py="xs">
-    <Title order={3} ta="center"> Agent Update Form</Title>
+    <Title order={3} ta="center" c="#694a7b"> Agent Update Form</Title>
     <DynamicForm schema={agentUpdateSchema} />
   </Container>
   )
