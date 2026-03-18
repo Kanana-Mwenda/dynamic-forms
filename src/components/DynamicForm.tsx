@@ -334,7 +334,7 @@ const { register, handleSubmit, watch, control, formState: { errors }, reset } =
   return (
     <form key={formKey} onSubmit={handleSubmit(onSubmit)}>
       {renderLayout(schema.layout || [])}
-      <Button type="submit" variant="filled" color="blue">
+      <Button type="submit" variant="filled">
         Submit
       </Button>
     </form>

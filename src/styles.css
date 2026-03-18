@@ -1,3 +1,9 @@
+@import url('https://fonts.googleapis.com/css2?family=Lexend+Deca:wght@100;200;300;400;500;600;700;800;900&display=swap');
+
+*{
+  font-family: 'Lexend Deca', sans-serif;
+}
+
 /* Form */
 form {
   width: 100%;
@@ -31,12 +37,19 @@ input, select, textarea {
 
 input:focus, select:focus, textarea:focus {
   outline: none;
-  border-color: #007bff;
+  border-color: #694a7b;
 }
 
 /* Submit Button */ 
 button[type="submit"] {
 margin-top: 10px;
+background-color: #694a7b;
+}
+
+/* SUbmit button hover */
+button[type="submit"]:hover {
+  background-color: #4b2363;
+  cursor: pointer;
 }
 
 /* Title */
@@ -56,3 +69,69 @@ hr {
   padding: 5px ;
 }
 
+
+input[type="text"],
+input[type="password"],
+input[type="email"],
+input[type="number"],
+input[type="date"],
+select,
+textarea {
+  background-color: #efefef;
+}
+
+.mantine-Textarea-input {
+  background-color: #efefef !important;
+}
+
+.mantine-MultiSelect-input {
+  background-color: #efefef !important;
+}
+
+.mantine-FileInput-input{
+  background-color: #efefef !important;
+}
+
+.mantine-DatePickerInput-input {
+  background-color: #efefef !important;
+}
+
+.mantine-Title-root{
+  font-family: 'Lexend Deca', sans-serif !important;
+}
+
+.mantine-Select-input,
+.mantine-Select-item,
+.mantine-Select-dropdown * {
+  font-family: 'Lexend Deca', sans-serif !important;
+  background-color: #efefef !important;
+}
+
+input::placeholder,
+select::placeholder,
+textarea::placeholder {
+  font-family: 'Lexend Deca', sans-serif !important;
+}
+
+.mantine-Radio-bullet {
+  border: 2px solid #694a7b !important;
+}
+
+.mantine-Radio-wrapper {
+  background-color: #694a7b !important;
+}
+
+/* Switch track */
+.mantine-Switch-input:checked + .mantine-Switch-track {
+  background-color: #694a7b !important;  
+}
+
+/* Switch thumb */
+.mantine-Switch-thumb {
+  background-color: white !important;
+}
+
+.mantine-Switch-input:checked + .mantine-Switch-thumb {
+  background-color: white !important;
+  border-color: #694a7b !important;
+}
