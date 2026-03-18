@@ -1,7 +1,19 @@
 @import url('https://fonts.googleapis.com/css2?family=Lexend+Deca:wght@100;200;300;400;500;600;700;800;900&display=swap');
 
+:root{
+  --font-family: 'Lexend Deca', sans-serif;
+  --primary-color: #694a7b;
+  --primary-color-btn-hover: #4b2363;
+  --form-border-color: #ddd;
+  --focus-border-color: #694a7b;
+  --background-color: #efefef;
+  --switch-thumb-color: white;
+  --text-color: #333;
+  --select-hover: #b490cb;
+}
+
 *{
-  font-family: 'Lexend Deca', sans-serif;
+  font-family: var(--font-family);
 }
 
 /* Form */
@@ -10,7 +22,7 @@ form {
   max-width: 940px;
   margin: 0 auto;
   padding: 24px;
-  border: 2px solid #ddd;  
+  border: 2px solid var(--form-border-color);  
   border-radius: 8px;    
   box-shadow: 0 2px 4px rgba(0,0,0,0.1);
   overflow: hidden;
@@ -25,7 +37,7 @@ label {
   display: block;
   margin-bottom: 6px;
   font-weight: bold;
-  color: #333;
+  color: var(--text-color);
 }
 
 input, select, textarea {
@@ -37,18 +49,18 @@ input, select, textarea {
 
 input:focus, select:focus, textarea:focus {
   outline: none;
-  border: 2px solid #694a7b;
+  border: 2px solid var(--focus-border-color);
 }
 
 /* Submit Button */ 
 button[type="submit"] {
 margin-top: 10px;
-background-color: #694a7b;
+background-color: var(--primary-color);
 }
 
-/* SUbmit button hover */
+/* Submit button hover */
 button[type="submit"]:hover {
-  background-color: #4b2363;
+  background-color: var(--primary-color-btn-hover);
   cursor: pointer;
 }
 
@@ -69,6 +81,7 @@ hr {
   padding: 5px ;
 }
 
+/* Inputs */
 input[type="text"],
 input[type="password"],
 input[type="email"],
@@ -76,71 +89,78 @@ input[type="number"],
 input[type="date"],
 select,
 textarea {
-  background-color: #efefef;
+  background-color: var(--background-color);
 }
 
 .mantine-Textarea-input {
-  background-color: #efefef !important;
+  background-color: var(--background-color) !important;
 }
 
 .mantine-MultiSelect-input input:focus,
 .mantine-MultiSelect-input:focus-within input {
   outline: none !important;
   box-shadow: none !important;
-  border: 2px solid #694a7b !important;
+  border: 2px solid var(--focus-border-color)!important;
 }
 
 .mantine-MultiSelect-input:focus-within,
 .mantine-MultiSelect-input:focus {
   outline: none !important;
   box-shadow: none !important;
-  border: 2px solid #694a7b !important;
+  border: 2px solid var(--focus-border-color) !important;
 }
 
 .mantine-FileInput-input{
-  background-color: #efefef !important;
+  background-color: var(--background-color) !important;
 }
 
 .mantine-DatePickerInput-input {
-  background-color: #efefef !important;
+  background-color: var(--background-color) !important;
 }
 
 .mantine-Title-root{
-  font-family: 'Lexend Deca', sans-serif !important;
+  font-family: var(--font-family) !important;
 }
 
 .mantine-Select-input {
-  font-family: 'Lexend Deca', sans-serif !important;
-  background-color: #efefef !important;
+  font-family: var(--font-family) !important;
+  background-color: var(--background-color) !important;
 }
 
 .mantine-Select-item {
-  background-color: #efefef !important;;
+  background-color: var(--background-color) !important;;
 }
+
+.mantine-Select-item:hover:not([data-selected="true"]),
+[role="option"]:hover:not([aria-selected="true"]) {
+  background-color: var(--select-hover)!important;
+  color: #1a0f2e !important;
+}
+
 
 input::placeholder,
 select::placeholder,
 textarea::placeholder {
-  font-family: 'Lexend Deca', sans-serif !important;
+  font-family: var(--font-family) !important;
 }
 
 .mantine-Radio-bullet {
-  border: 2px solid #694a7b !important;
+  border: 2px solid var(--primary-color) !important;
 }
 
 .mantine-Radio-wrapper {
-  background-color: #694a7b !important;
+  background-color: var(--primary-color) !important;
 }
 
 .mantine-Switch-input:checked + .mantine-Switch-track {
-  background-color: #694a7b !important;  
+  background-color: var(--primary-color) !important;  
 }
 
 .mantine-Switch-thumb {
-  background-color: white !important;
+  background-color: var(--switch-thumb-color) !important;
 }
 
 .mantine-Switch-input:checked + .mantine-Switch-thumb {
-  background-color: white !important;
-  border-color: #694a7b !important;
+  background-color: var(--switch-thumb-color) !important;
+  border-color: var(--primary-color) !important;
 }
