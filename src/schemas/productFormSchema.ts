@@ -21,7 +21,6 @@ export const productFormSchema: any = {
                     { label: "Electronics", value: "electronics" },
                     { label: "Clothing", value: "clothing" },
                     { label: "Food", value: "food" },
-                    { label: "Books", value: "books" }
                 ]
             },
             rules: { required: "Category is required" }
@@ -188,6 +187,11 @@ export const productFormSchema: any = {
             title: "Category-Specific Details",
             withDivider: true,
             collapsible: true,
+            visibleWhen: {
+                field: "category",
+                op: "in",
+                value: ["electronics", "clothing", "food"]
+            },
             children: [
                 {
                     kind: "grid",

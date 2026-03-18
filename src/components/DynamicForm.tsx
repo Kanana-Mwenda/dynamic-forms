@@ -1,7 +1,7 @@
 import type { FormSchema, LayoutNode, FieldDefinition } from "../types";
 import { Controller, useForm } from "react-hook-form";
 import { useState } from "react";
-import { Select, TextInput, Textarea, NumberInput, Radio, Switch, Button, MultiSelect, FileInput } from "@mantine/core";
+import { Select, TextInput, Textarea, NumberInput, Radio, Switch, Button, MultiSelect, FileInput, PasswordInput } from "@mantine/core";
 import { notifications } from '@mantine/notifications';
 import { DatePickerInput } from '@mantine/dates';
 
@@ -58,6 +58,16 @@ const { register, handleSubmit, watch, control, formState: { errors }, reset } =
 
     switch (field.renderer) {
       case "text":
+        if (field.inputType === "password"){
+          return (
+            <PasswordInput
+              label={field.label}
+              {...register(field.id, field.rules)}
+              error={errorMessage}
+            />
+          )
+        }
+
         return (
           <TextInput
             label={field.label}
