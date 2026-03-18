@@ -83,17 +83,6 @@ textarea {
   background-color: #efefef !important;
 }
 
-/* .mantine-MultiSelect-input {
-  background-color: #efefef !important;
-  outline: none !important;
-}
-
-.mantine-Multiselect-input:focus{
-  border: 2px solid #694a7b !important;
-  outline: none !important;
-} */
-
-/* Kill inner input outline in MultiSelect only */
 .mantine-MultiSelect-input input:focus,
 .mantine-MultiSelect-input:focus-within input {
   outline: none !important;
@@ -101,7 +90,6 @@ textarea {
   border: 2px solid #694a7b !important;
 }
 
-/* Ensure outer container clean focus */
 .mantine-MultiSelect-input:focus-within,
 .mantine-MultiSelect-input:focus {
   outline: none !important;
@@ -121,7 +109,6 @@ textarea {
   font-family: 'Lexend Deca', sans-serif !important;
 }
 
-/* Select */
 .mantine-Select-input {
   font-family: 'Lexend Deca', sans-serif !important;
   background-color: #efefef !important;
@@ -145,12 +132,10 @@ textarea::placeholder {
   background-color: #694a7b !important;
 }
 
-/* Switch track */
 .mantine-Switch-input:checked + .mantine-Switch-track {
   background-color: #694a7b !important;  
 }
 
-/* Switch thumb */
 .mantine-Switch-thumb {
   background-color: white !important;
 }
