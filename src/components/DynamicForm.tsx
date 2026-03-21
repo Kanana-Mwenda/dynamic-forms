@@ -1,12 +1,13 @@
 import type { FormSchema, LayoutNode, FieldDefinition } from "../types";
 import { Controller, useForm } from "react-hook-form";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Select, TextInput, Textarea, NumberInput, Radio, Switch, Button, MultiSelect, FileInput, PasswordInput } from "@mantine/core";
 import { notifications } from '@mantine/notifications';
 import { DatePickerInput } from '@mantine/dates';
 
 interface DynamicFormProps {
   schema: FormSchema;
+  formStorageKey?: string
 }
 
 const spacingMap: Record<string, string> = {
@@ -17,9 +18,27 @@ const spacingMap: Record<string, string> = {
 
 const DynamicForm = ({ schema }: DynamicFormProps) => {
   const [formKey, setFormKey] = useState(0); // for resetting the form
-const { register, handleSubmit, watch, control, formState: { errors }, reset } = useForm();
+  const formStorageKey = `${schema.id}_draft`;
+  const savedDraft = localStorage.getItem(formStorageKey);
+  const defaultValues = savedDraft ? JSON.parse(savedDraft) : {};
+
+const { register, handleSubmit, watch, control, formState: { errors }, reset } = useForm({
+    defaultValues,});
 
   const values = watch();
+
+  // save draft
+  useEffect(() => {
+    localStorage.setItem(formStorageKey, JSON.stringify(values));
+  }, [values, formStorageKey]);
+
+  //load draft
+  useEffect(() => {
+    const savedDraft = localStorage.getItem(formStorageKey);
+    if (savedDraft) {
+      reset(JSON.parse(savedDraft));
+    }
+  }, []);
 
   // Conditional Visibility
   const isFieldVisible = (field: FieldDefinition) => {
@@ -318,6 +337,7 @@ const { register, handleSubmit, watch, control, formState: { errors }, reset } =
   // Submit Handler
   const onSubmit = (data: any) => {
     console.log("Form submitted:", data);
+    localStorage.removeItem(formStorageKey);
     notifications.show({
       title: 'Success',
       message: 'Form submitted successfully!',
