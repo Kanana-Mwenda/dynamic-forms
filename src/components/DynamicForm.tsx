@@ -48,7 +48,7 @@ const DynamicForm = ({ schema }: DynamicFormProps) => {
     const hasValues = Object.values(values).some((v) => {
       if (typeof v === "string") return v.trim() !== "";
       if (Array.isArray(v)) return v.length > 0;
-      return Boolean(v); // false/null/undefined
+      return Boolean(v); // false/true
 });
 
     if (hasValues) {
