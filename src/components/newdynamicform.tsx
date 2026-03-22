@@ -1,20 +1,9 @@
 import type { FormSchema, LayoutNode, FieldDefinition } from "../types";
 import { Controller, useForm } from "react-hook-form";
 import { useEffect, useState, useRef } from "react";
-import {
-  Select,
-  TextInput,
-  Textarea,
-  NumberInput,
-  Radio,
-  Switch,
-  Button,
-  MultiSelect,
-  FileInput,
-  PasswordInput,
-} from "@mantine/core";
-import { notifications } from "@mantine/notifications";
-import { DatePickerInput } from "@mantine/dates";
+import { Select, TextInput, Textarea, NumberInput, Radio, Switch, Button, MultiSelect, FileInput, PasswordInput } from "@mantine/core";
+import { notifications } from '@mantine/notifications';
+import { DatePickerInput } from '@mantine/dates';
 
 interface DynamicFormProps {
   schema: FormSchema;
@@ -30,68 +19,49 @@ const spacingMap: Record<string, string> = {
 const DynamicForm = ({ schema }: DynamicFormProps) => {
   const [formKey, setFormKey] = useState(0);
   const formStorageKey = `${schema.id}_draft`;
-
-  // Prevent autosave race during submit/reset
   const isSubmittedRef = useRef(false);
-  const saveTimeoutRef = useRef<number | null>(null);
+  const lastClearedRef = useRef(0);
+  const lastSavedRef = useRef<string | null>(null);
 
   const savedDraft = localStorage.getItem(formStorageKey);
   const defaultValues = savedDraft ? JSON.parse(savedDraft) : {};
 
-  const {
-    register,
-    handleSubmit,
-    watch,
-    control,
-    formState: { errors },
-    reset,
-  } = useForm({
+  if (savedDraft) {
+    lastSavedRef.current = JSON.stringify(defaultValues);
+  }
+
+  const { register, handleSubmit, watch, control, formState: { errors }, reset } = useForm({
     defaultValues,
   });
 
   const values = watch();
 
-  // SAVE DRAFT EFFECT (debounced + safe against submit race)
+ 
+  // SAVE DRAFT EFFECT
   useEffect(() => {
-  if (isSubmittedRef.current) return;
+    if (isSubmittedRef.current) return; // STOP saving during submit/reset
+    // Prevent re-saving immediately after a manual clear of the draft
+    if (lastClearedRef.current && Date.now() - lastClearedRef.current < 1000) return;
 
-  if (saveTimeoutRef.current !== null) {
-    window.clearTimeout(saveTimeoutRef.current);
-    saveTimeoutRef.current = null;
-  }
+    const timeoutId = setTimeout(() => {
+      if (isSubmittedRef.current) return; // cancel if submit started after timeout was scheduled
+      if (lastClearedRef.current && Date.now() - lastClearedRef.current < 1500) return; // recently cleared
 
-  saveTimeoutRef.current = window.setTimeout(() => {
-    // if submit started after this timeout was scheduled, abort
-    if (isSubmittedRef.current) return;
+      const hasValues = Object.values(values).some(v => v !== "" && v !== null && v !== undefined);
+      const str = JSON.stringify(values || {});
+      if (hasValues) {
+        if (lastSavedRef.current === str) return; // don't re-save identical snapshot
+        localStorage.setItem(formStorageKey, str);
+        lastSavedRef.current = str;
+      } else {
+        localStorage.removeItem(formStorageKey);
+        lastSavedRef.current = null;
+      }
+    }, 300);
 
-    const hasValues = Object.values(values).some((v) => {
-  if (typeof v === "string") return v.trim() !== "";
-  if (Array.isArray(v)) return v.length > 0;
-  return Boolean(v); // false/null/undefined => not a value
-});
-
-    if (hasValues) {
-      localStorage.setItem(formStorageKey, JSON.stringify(values));
-    } else {
-      localStorage.removeItem(formStorageKey);
-    }
-
-    saveTimeoutRef.current = null;
-  }, 300);
-
-  return () => {
-    if (saveTimeoutRef.current !== null) {
-      window.clearTimeout(saveTimeoutRef.current);
-      saveTimeoutRef.current = null;
-    }
-  };
+    return () => clearTimeout(timeoutId);
   }, [values, formStorageKey]);
 
-  // LOAD DRAFT ON MOUNT
-  useEffect(() => {
-    const draft = localStorage.getItem(formStorageKey);
-    if (draft) reset(JSON.parse(draft));
-  }, [formStorageKey, reset]);
 
   // Conditional Visibility
   const isFieldVisible = (field: FieldDefinition) => {
@@ -101,7 +71,7 @@ const DynamicForm = ({ schema }: DynamicFormProps) => {
     if (Array.isArray(field.visibleWhen)) {
       return field.visibleWhen.every((condition) => {
         const currentValue = values[condition.field];
-
+        
         if (condition.op === "in") {
           return condition.value.includes(currentValue);
         }
@@ -130,20 +100,20 @@ const DynamicForm = ({ schema }: DynamicFormProps) => {
 
     switch (field.renderer) {
       case "text":
-        if (field.inputType === "password") {
+        if (field.inputType === "password"){
           return (
             <PasswordInput
               label={field.label}
               {...register(field.id, field.rules)}
               error={errorMessage}
             />
-          );
+          )
         }
 
         return (
           <TextInput
             label={field.label}
-            type="text"
+            type= "text"
             placeholder={field.placeholder}
             {...register(field.id, field.rules)}
             error={errorMessage}
@@ -186,13 +156,17 @@ const DynamicForm = ({ schema }: DynamicFormProps) => {
             control={control}
             rules={field.rules}
             render={({ field: controllerField }) => (
-              <Radio.Group label={field.label} {...controllerField} error={errorMessage}>
+              <Radio.Group
+                label={field.label}
+                {...controllerField}
+                error={errorMessage}
+              >
                 {field.props?.options?.map((option: any) => (
-                  <Radio
-                    color="#694a7b"
+                  <Radio color="#694a7b"
                     key={option.value}
                     label={option.label}
                     value={option.value}
+
                   />
                 ))}
               </Radio.Group>
@@ -207,8 +181,7 @@ const DynamicForm = ({ schema }: DynamicFormProps) => {
             control={control}
             rules={field.rules}
             render={({ field: controllerField }) => (
-              <Switch
-                color="694a7b"
+              <Switch color="694a7b"
                 label={field.label}
                 {...controllerField}
                 error={errorMessage}
@@ -235,15 +208,14 @@ const DynamicForm = ({ schema }: DynamicFormProps) => {
           />
         );
 
-      case "checkbox":
+        case "checkbox":
         return (
           <Controller
             name={field.id}
             control={control}
             rules={field.rules}
             render={({ field: controllerField }) => (
-              <Switch
-                color="694a7b"
+              <Switch color="694a7b"
                 label={field.label}
                 {...controllerField}
                 error={errorMessage}
@@ -252,7 +224,7 @@ const DynamicForm = ({ schema }: DynamicFormProps) => {
           />
         );
 
-      case "date":
+        case "date":
         return (
           <Controller
             name={field.id}
@@ -270,7 +242,7 @@ const DynamicForm = ({ schema }: DynamicFormProps) => {
           />
         );
 
-      case "multiselect":
+        case "multiselect":
         return (
           <Controller
             name={field.id}
@@ -287,7 +259,7 @@ const DynamicForm = ({ schema }: DynamicFormProps) => {
           />
         );
 
-      case "file":
+        case "file":
         return (
           <Controller
             name={field.id}
@@ -337,12 +309,15 @@ const DynamicForm = ({ schema }: DynamicFormProps) => {
         case "field": {
           const field = schema.fields[node.fieldId];
           if (!field) return null;
+
           if (!isFieldVisible(field)) return null;
 
           return (
             <div
               key={field.id}
-              style={node.colSpan ? { gridColumn: `span ${node.colSpan}` } : undefined}
+              style={
+                node.colSpan ? { gridColumn: `span ${node.colSpan}` } : undefined
+              }
             >
               {renderField(field)}
             </div>
@@ -350,13 +325,9 @@ const DynamicForm = ({ schema }: DynamicFormProps) => {
         }
 
         case "section":
-          if (
-            node.visibleWhen &&
-            !isFieldVisible({ visibleWhen: node.visibleWhen } as FieldDefinition)
-          ) {
+          if (node.visibleWhen && !isFieldVisible({ visibleWhen: node.visibleWhen } as FieldDefinition)) {
             return null;
           }
-
           return (
             <div key={index}>
               {node.title && <h3>{node.title}</h3>}
@@ -384,56 +355,52 @@ const DynamicForm = ({ schema }: DynamicFormProps) => {
       }
     });
   };
+ 
 
   // Submit Handler
   const onSubmit = (data: any) => {
-    // stop saving
-    isSubmittedRef.current = true;
-
-    // cancel pending save
-    if (saveTimeoutRef.current !== null) {
-      window.clearTimeout(saveTimeoutRef.current);
-      saveTimeoutRef.current = null;
-    }
+    isSubmittedRef.current = true; //stop saving
 
     console.log("Form submitted:", data);
-
     localStorage.removeItem(formStorageKey);
+    lastClearedRef.current = Date.now();
+    lastSavedRef.current = null;
+     
+    // Reset form to explicit empty values so UI clears immediately
+    const emptyValues: Record<string, any> = {};
+    Object.keys(schema.fields || {}).forEach((fid) => {
+      emptyValues[fid] = undefined;
+    });
+    reset(emptyValues, { keepValues: false });
 
-    // reset fields explicitly (prevents restoring initial draft defaults)
-    const clearedValues = Object.keys(schema.fields || {}).reduce(
-      (acc, fieldId) => {
-        acc[fieldId] = undefined;
-        return acc;
-      },
-      {} as Record<string, any>
-    );
-    reset(clearedValues);
+    // Reset form key (forces small re-render of layout)
     setFormKey((prevKey) => prevKey + 1);
+    // keep the submit lock a bit longer to avoid race with watch/save effect
+    setTimeout(() => {
+      isSubmittedRef.current = false; //allow saving
+      lastClearedRef.current = 0;
+    }, 1500);
 
     notifications.show({
-      title: "Success",
-      message: "Form submitted successfully!",
-      color: "green",
-      position: "bottom-right",
+      title: 'Success',
+      message: 'Form submitted successfully!',
+      color: 'green',
+      position: 'bottom-right',
       withCloseButton: true,
       autoClose: 2000,
-    });
 
-    // keep submit lock briefly to avoid races
-    setTimeout(() => {
-      isSubmittedRef.current = false;
-    }, 1000);
+    }); 
+
   };
 
   return (
     <div key={formKey}>
-      <form onSubmit={handleSubmit(onSubmit)}>
-        {renderLayout(schema.layout || [])}
-        <Button type="submit" variant="filled">
-          Submit
-        </Button>
-      </form>
+    <form onSubmit={handleSubmit(onSubmit)}>
+      {renderLayout(schema.layout || [])}
+      <Button type="submit" variant="filled">
+        Submit
+      </Button>
+    </form>
     </div>
   );
 };
