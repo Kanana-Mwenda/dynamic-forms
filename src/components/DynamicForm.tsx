@@ -1,18 +1,7 @@
 import type { FormSchema, LayoutNode, FieldDefinition } from "../types";
 import { Controller, useForm } from "react-hook-form";
 import { useEffect, useState, useRef } from "react";
-import {
-  Select,
-  TextInput,
-  Textarea,
-  NumberInput,
-  Radio,
-  Switch,
-  Button,
-  MultiSelect,
-  FileInput,
-  PasswordInput,
-} from "@mantine/core";
+import {Select,TextInput,Textarea,NumberInput,Radio,Switch,Button,MultiSelect,FileInput,PasswordInput} from "@mantine/core";
 import { notifications } from "@mantine/notifications";
 import { DatePickerInput } from "@mantine/dates";
 
@@ -31,43 +20,35 @@ const DynamicForm = ({ schema }: DynamicFormProps) => {
   const [formKey, setFormKey] = useState(0);
   const formStorageKey = `${schema.id}_draft`;
 
-  // Prevent autosave race during submit/reset
-  const isSubmittedRef = useRef(false);
+  const isSubmittedRef = useRef(false); // prevent draft save during submit
   const saveTimeoutRef = useRef<number | null>(null);
 
   const savedDraft = localStorage.getItem(formStorageKey);
   const defaultValues = savedDraft ? JSON.parse(savedDraft) : {};
 
-  const {
-    register,
-    handleSubmit,
-    watch,
-    control,
-    formState: { errors },
-    reset,
-  } = useForm({
-    defaultValues,
-  });
+  const {register, handleSubmit, watch, control, formState: { errors }, reset,} = useForm({defaultValues});
 
   const values = watch();
 
-  // SAVE DRAFT EFFECT (debounced + safe against submit race)
-  useEffect(() => {
-  if (isSubmittedRef.current) return;
 
+  //SAVING DRAFT
+  useEffect(() => {
+  if (isSubmittedRef.current) return; // stop saving during submit
+
+  // debounce
   if (saveTimeoutRef.current !== null) {
     window.clearTimeout(saveTimeoutRef.current);
     saveTimeoutRef.current = null;
   }
 
   saveTimeoutRef.current = window.setTimeout(() => {
-    // if submit started after this timeout was scheduled, abort
     if (isSubmittedRef.current) return;
 
+    // check if form has values
     const hasValues = Object.values(values).some((v) => {
-  if (typeof v === "string") return v.trim() !== "";
-  if (Array.isArray(v)) return v.length > 0;
-  return Boolean(v); // false/null/undefined => not a value
+      if (typeof v === "string") return v.trim() !== "";
+      if (Array.isArray(v)) return v.length > 0;
+      return Boolean(v); // false/null/undefined
 });
 
     if (hasValues) {
@@ -87,11 +68,13 @@ const DynamicForm = ({ schema }: DynamicFormProps) => {
   };
   }, [values, formStorageKey]);
 
-  // LOAD DRAFT ON MOUNT
+
+  //LOAD DRAFT
   useEffect(() => {
     const draft = localStorage.getItem(formStorageKey);
     if (draft) reset(JSON.parse(draft));
   }, [formStorageKey, reset]);
+
 
   // Conditional Visibility
   const isFieldVisible = (field: FieldDefinition) => {
@@ -387,10 +370,9 @@ const DynamicForm = ({ schema }: DynamicFormProps) => {
 
   // Submit Handler
   const onSubmit = (data: any) => {
-    // stop saving
-    isSubmittedRef.current = true;
+    isSubmittedRef.current = true; // stop saving
 
-    // cancel pending save
+    //Cancel pending save
     if (saveTimeoutRef.current !== null) {
       window.clearTimeout(saveTimeoutRef.current);
       saveTimeoutRef.current = null;
@@ -420,7 +402,7 @@ const DynamicForm = ({ schema }: DynamicFormProps) => {
       autoClose: 2000,
     });
 
-    // keep submit lock briefly to avoid races
+    // keep submit lock 
     setTimeout(() => {
       isSubmittedRef.current = false;
     }, 1000);
