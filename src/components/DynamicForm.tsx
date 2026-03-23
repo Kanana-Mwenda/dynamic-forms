@@ -1,7 +1,7 @@
 import type { FormSchema, LayoutNode, FieldDefinition } from "../types";
-import { Controller, useForm } from "react-hook-form";
+import { Controller, set, useForm } from "react-hook-form";
 import { useEffect, useState, useRef } from "react";
-import {Select,TextInput,Textarea,NumberInput,Radio,Switch,Button,MultiSelect,FileInput,PasswordInput} from "@mantine/core";
+import {Select,TextInput,Textarea,NumberInput,Radio,Switch,Button,MultiSelect,FileInput,PasswordInput,Modal,Group,Text} from "@mantine/core";
 import { notifications } from "@mantine/notifications";
 import { DatePickerInput } from "@mantine/dates";
 
@@ -23,50 +23,63 @@ const DynamicForm = ({ schema }: DynamicFormProps) => {
   const isSubmittedRef = useRef(false); // prevent draft save during submit
   const saveTimeoutRef = useRef<number | null>(null);
 
-  const savedDraft = localStorage.getItem(formStorageKey);
+  const [savedDraft, setSavedDraft] = useState(()=> {
+    const draft = localStorage.getItem(formStorageKey);
+    return draft && draft !== '{}' ? draft : null;
+  });
+
   const defaultValues = savedDraft ? JSON.parse(savedDraft) : {};
 
+  const [hasChosenDraft, setHasChosenDraft] = useState(false); //check if user has chosen
+  
   const {register, handleSubmit, watch, control, formState: { errors }, reset,} = useForm({defaultValues});
-
   const values = watch();
+
+
+  //PROMPT USER TO CHOOSE TO LOAD DRAFT OR START AFRESH
+  useEffect(() => {
+    const draft = localStorage.getItem(formStorageKey);
+    if (draft) {
+    setSavedDraft(draft);
+    }
+  }, [formStorageKey]);
 
 
   //SAVING DRAFT
   useEffect(() => {
-  if (isSubmittedRef.current) return; // stop saving during submit
+    if (isSubmittedRef.current) return; // stop saving during submit
 
-  // debounce
-  if (saveTimeoutRef.current !== null) {
-    window.clearTimeout(saveTimeoutRef.current);
-    saveTimeoutRef.current = null;
-  }
-
-  saveTimeoutRef.current = window.setTimeout(() => {
-    if (isSubmittedRef.current) return;
-
-    // check if form has values
-    const hasValues = Object.values(values).some((v) => {
-      if (typeof v === "string") return v.trim() !== "";
-      if (Array.isArray(v)) return v.length > 0;
-      return Boolean(v); // false/true
-});
-
-    if (hasValues) {
-      localStorage.setItem(formStorageKey, JSON.stringify(values));
-    } else {
-      localStorage.removeItem(formStorageKey);
-    }
-
-    saveTimeoutRef.current = null;
-  }, 300);
-
-  return () => {
+    // debounce
     if (saveTimeoutRef.current !== null) {
       window.clearTimeout(saveTimeoutRef.current);
-      saveTimeoutRef.current = null;
     }
-  };
-  }, [values, formStorageKey]);
+
+    saveTimeoutRef.current = window.setTimeout(() => {
+      if (isSubmittedRef.current) return;
+
+      // check if form has values
+      const hasValues = Object.values(values).some((v) => {
+        if (typeof v === "string") return v.trim() !== "";
+        if (Array.isArray(v)) return v.length > 0;
+        return Boolean(v); // false/true
+  });
+
+      if (hasValues) {
+        localStorage.setItem(formStorageKey, JSON.stringify(values));
+      } else {
+        localStorage.removeItem(formStorageKey);
+      }
+
+      saveTimeoutRef.current = null;
+    }, 300);
+
+    return () => {
+      if (saveTimeoutRef.current !== null) {
+        window.clearTimeout(saveTimeoutRef.current);
+        saveTimeoutRef.current = null;
+      }
+    };
+    }, [values, formStorageKey]);
 
 
   //LOAD DRAFT
@@ -408,6 +421,39 @@ const DynamicForm = ({ schema }: DynamicFormProps) => {
   };
 
   return (
+    <>
+    <Modal 
+      opened={Boolean(savedDraft) && !hasChosenDraft}
+      onClose={() => setHasChosenDraft(true)}
+      centered
+      >
+        <Text mb="xs" pt={0} ta="center">Resume from your last saved draft?</Text>
+
+        <Group justify="center">
+          {/*Continue Button */}
+          <Button type="submit" onClick={() => {
+            reset(JSON.parse(savedDraft!));
+            setHasChosenDraft(true);
+          }}>Continue</Button>
+  
+          {/* Start Over Button */}
+          <Button type="submit" onClick={() => {
+            localStorage.removeItem(formStorageKey);
+            setSavedDraft(null);
+            setHasChosenDraft(true);
+
+              const clearedValues: Record<string, any> = {};
+              Object.keys(schema.fields || {}).forEach((fieldId) => {
+                clearedValues[fieldId] = undefined;
+              });
+
+            reset(clearedValues);
+            setFormKey((prevKey) => prevKey + 1);
+            
+          }}>Discard</Button>
+        </Group>
+    </Modal>
+
     <div key={formKey}>
       <form onSubmit={handleSubmit(onSubmit)}>
         {renderLayout(schema.layout || [])}
@@ -416,6 +462,7 @@ const DynamicForm = ({ schema }: DynamicFormProps) => {
         </Button>
       </form>
     </div>
+    </>
   );
 };
 
