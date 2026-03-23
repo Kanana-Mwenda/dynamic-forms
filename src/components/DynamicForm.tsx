@@ -372,7 +372,7 @@ const DynamicForm = ({ schema }: DynamicFormProps) => {
   const onSubmit = (data: any) => {
     isSubmittedRef.current = true; // stop saving
 
-    //Cancel pending save
+    //cancel pending save
     if (saveTimeoutRef.current !== null) {
       window.clearTimeout(saveTimeoutRef.current);
       saveTimeoutRef.current = null;
@@ -380,16 +380,15 @@ const DynamicForm = ({ schema }: DynamicFormProps) => {
 
     console.log("Form submitted:", data);
 
-    localStorage.removeItem(formStorageKey);
+    localStorage.removeItem(formStorageKey); // delete saved draft
 
-    // reset fields explicitly (prevents restoring initial draft defaults)
-    const clearedValues = Object.keys(schema.fields || {}).reduce(
-      (acc, fieldId) => {
-        acc[fieldId] = undefined;
-        return acc;
-      },
-      {} as Record<string, any>
-    );
+    //reset fields
+    const clearedValues: Record<string, any> = {};
+
+    Object.keys(schema.fields || {}).forEach((fieldId) => {
+      clearedValues[fieldId] = undefined;
+    });
+
     reset(clearedValues);
     setFormKey((prevKey) => prevKey + 1);
 
@@ -402,7 +401,7 @@ const DynamicForm = ({ schema }: DynamicFormProps) => {
       autoClose: 2000,
     });
 
-    // keep submit lock 
+    //keep submit lock 
     setTimeout(() => {
       isSubmittedRef.current = false;
     }, 1000);
