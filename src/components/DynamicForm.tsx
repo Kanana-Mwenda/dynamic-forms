@@ -1,9 +1,10 @@
 import type { FormSchema, LayoutNode, FieldDefinition } from "../types";
-import { Controller, set, useForm } from "react-hook-form";
+import { Controller, useForm } from "react-hook-form";
 import { useEffect, useState, useRef } from "react";
 import {Select,TextInput,Textarea,NumberInput,Radio,Switch,Button,MultiSelect,FileInput,PasswordInput,Modal,Group,Text} from "@mantine/core";
 import { notifications } from "@mantine/notifications";
 import { DatePickerInput } from "@mantine/dates";
+import { IconCheck, IconTrash } from "@tabler/icons-react";
 
 interface DynamicFormProps {
   schema: FormSchema;
@@ -202,18 +203,29 @@ const DynamicForm = ({ schema }: DynamicFormProps) => {
             name={field.id}
             control={control}
             rules={field.rules}
-            render={({ field: controllerField }) => (
-              <Switch
+            render={({ field: controllerField }) => {
+              if (field.id === "willingToRelocate") {
+                return (
+                  <>
+                   <Text size="sm" mt={4} fw={500}>{field.label}</Text>
+                    <Switch id={field.id} color="694a7b" mt={6} {...controllerField} />
+                  </>
+                );
+            }
+
+            return (
+                <Switch
                 color="694a7b"
                 label={field.label}
                 {...controllerField}
                 error={errorMessage}
               />
-            )}
+            )         
+            }}
           />
         );
 
-      case "number":
+        case "number":
         return (
           <Controller
             name={field.id}
@@ -430,14 +442,16 @@ const DynamicForm = ({ schema }: DynamicFormProps) => {
         <Text mb="xs" pt={0} ta="center">Resume from your last saved draft?</Text>
 
         <Group justify="center">
-          {/*Continue Button */}
-          <Button type="submit" onClick={() => {
+          <Button variant="filled" color="green" onClick={() => {
             reset(JSON.parse(savedDraft!));
             setHasChosenDraft(true);
-          }}>Continue</Button>
+          }}
+          >
+            <IconCheck size={16} style={{ marginRight: 5 }} />
+            Continue</Button>
   
           {/* Start Over Button */}
-          <Button type="submit" onClick={() => {
+          <Button variant="filled" color="red" onClick={() => {
             localStorage.removeItem(formStorageKey);
             setSavedDraft(null);
             setHasChosenDraft(true);
@@ -450,7 +464,9 @@ const DynamicForm = ({ schema }: DynamicFormProps) => {
             reset(clearedValues);
             setFormKey((prevKey) => prevKey + 1);
             
-          }}>Discard</Button>
+          }}>
+            <IconTrash size={16} style={{ marginRight: 5 }} />
+            Discard</Button>
         </Group>
     </Modal>
 

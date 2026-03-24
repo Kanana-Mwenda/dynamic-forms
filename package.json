@@ -17,6 +17,7 @@
     "@mantine/dates": "^8.3.17",
     "@mantine/hooks": "^8.3.16",
     "@mantine/notifications": "^8.3.16",
+    "@tabler/icons-react": "^3.40.0",
     "@tanstack/react-devtools": "latest",
     "@tanstack/react-router": "latest",
     "@tanstack/react-router-devtools": "latest",
