@@ -189,22 +189,18 @@ const DynamicForm = ({ schema }: DynamicFormProps) => {
             control={control}
             rules={field.rules}
             render={({ field: controllerField }) => {
-              if (field.id === "willingToRelocate") {
-                return (
-                  <>
-                   <Text size="sm" mt={4} fw={500}>{field.label}</Text>
-                    <Switch id={field.id} color="#694a7b" mt={6} {...controllerField} />
-                  </>
-                );
-            }
 
             return (
+              <>
+              {field.props?.labelProps && <Text {...field.props.labelProps}>{field.label}</Text>}
                 <Switch
                 color="#694a7b"
-                label={field.label}
+                label={field.props?.labelProps ? undefined : field.label}
+                {...field.props?.switchProps}
                 {...controllerField}
                 error={errorMessage}
               />
+              </>
             )         
             }}
           />

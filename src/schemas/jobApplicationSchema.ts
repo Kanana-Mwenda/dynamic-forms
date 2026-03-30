@@ -210,7 +210,11 @@ export const jobApplicationSchema: any = {
             id: "willingToRelocate",
             label: "Willing to Relocate",
             renderer: "switch",
-            defaultValue: false
+            defaultValue: false,
+            props: {
+                labelProps: { size: "sm" , mt: 4, fw: 500},
+                switchProps: { color: "#694a7b", mt: 6}
+            }
         },
         remoteWork: {
             id: "remoteWork",
