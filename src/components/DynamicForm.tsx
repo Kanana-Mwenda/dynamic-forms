@@ -24,6 +24,7 @@ const DynamicForm = ({ schema }: DynamicFormProps) => {
   const isSubmittedRef = useRef(false); // prevent draft save during submit
   const saveTimeoutRef = useRef<number | null>(null);
 
+  // LOAD SAVED DRAFT ON MOUNT
   const [savedDraft, setSavedDraft] = useState(()=> {
     const draft = localStorage.getItem(formStorageKey);
     return draft && draft !== '{}' ? draft : null;
@@ -35,15 +36,6 @@ const DynamicForm = ({ schema }: DynamicFormProps) => {
   
   const {register, handleSubmit, watch, control, formState: { errors }, reset,} = useForm({defaultValues});
   const values = watch();
-
-
-  //PROMPT USER TO CHOOSE TO LOAD DRAFT OR START AFRESH
-  useEffect(() => {
-    const draft = localStorage.getItem(formStorageKey);
-    if (draft) {
-    setSavedDraft(draft);
-    }
-  }, [formStorageKey]);
 
 
   //SAVING DRAFT
@@ -81,13 +73,6 @@ const DynamicForm = ({ schema }: DynamicFormProps) => {
       }
     };
     }, [values, formStorageKey]);
-
-
-  //LOAD DRAFT
-  useEffect(() => {
-    const draft = localStorage.getItem(formStorageKey);
-    if (draft) reset(JSON.parse(draft));
-  }, [formStorageKey, reset]);
 
 
   // Conditional Visibility
@@ -208,14 +193,14 @@ const DynamicForm = ({ schema }: DynamicFormProps) => {
                 return (
                   <>
                    <Text size="sm" mt={4} fw={500}>{field.label}</Text>
-                    <Switch id={field.id} color="694a7b" mt={6} {...controllerField} />
+                    <Switch id={field.id} color="#694a7b" mt={6} {...controllerField} />
                   </>
                 );
             }
 
             return (
                 <Switch
-                color="694a7b"
+                color="#694a7b"
                 label={field.label}
                 {...controllerField}
                 error={errorMessage}
@@ -251,7 +236,7 @@ const DynamicForm = ({ schema }: DynamicFormProps) => {
             rules={field.rules}
             render={({ field: controllerField }) => (
               <Switch
-                color="694a7b"
+                color="#694a7b"
                 label={field.label}
                 {...controllerField}
                 error={errorMessage}
